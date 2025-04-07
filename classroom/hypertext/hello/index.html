@@ -9,21 +9,32 @@
     <h1>Hello HTML</h1>
 
     <h2>Sumário</h2>
+    <hr />
+
     <ul>
       <li>
         <a href="#text">Text</a>
       </li>
       <li>
+        <a href="#images">Images</a>
+      </li>
+      <li>
         <a href="#lists">Lists</a>
+      </li>
+      <li>
+        <a href="#tables">Tables</a>
       </li>
     </ul>
 
     <h2 id="text">Text</h2>
+    <hr />
+    <a href="#">topo</a>
 
     <p>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex et
-      voluptatibus, dicta quaerat officia nam est voluptate aperiam odio, non
-      cupiditate autem doloribus dolor! A ab adipisci sunt ipsa possimus.
+      Lorem, ipsum <a href="pages/about.html">sobre</a> dolor sit amet
+      consectetur adipisicing elit. Ex et voluptatibus, dicta quaerat officia
+      nam est voluptate aperiam odio, non cupiditate autem doloribus dolor! A ab
+      adipisci sunt ipsa possimus.
     </p>
     <p>
       Optio quam nam at assumenda consectetur deserunt dolore, autem porro est
@@ -54,38 +65,16 @@
       maiores rerum cupiditate accusamus animi reiciendis quod et non!
     </p>
 
-    <h2 id="lists">Lists</h2>
+    <h2 id="images">Images</h2>
+    <hr />
     <a href="#">topo</a>
 
     <p>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laborum,
-      quisquam? Aspernatur molestiae voluptatibus expedita ipsam maiores saepe
-      reprehenderit ut, minima, nisi, molestias vel voluptate corporis voluptas
-      optio totam quas facilis!
+      <img src="imgs/ifpb-logo.png" alt="Logo do IFPB" />
     </p>
-    <p>
-      Repellat, cumque aperiam debitis consequatur, iste perferendis repellendus
-      dolor, aspernatur temporibus qui rerum? Autem maiores, doloremque sunt
-      fugiat inventore aliquid in magnam obcaecati provident, dicta adipisci
-      laborum molestiae incidunt expedita!
-    </p>
-    <p>
-      Exercitationem expedita reprehenderit odio tempore itaque sit iure unde
-      eos vel libero reiciendis nemo ad, voluptates, alias quis nulla! Culpa
-      magni ad obcaecati aliquam, sunt officiis impedit aperiam fugit ipsa.
-    </p>
-    <p>
-      Saepe repellat veritatis laborum accusamus suscipit sed cumque possimus!
-      Vero suscipit impedit ut magnam dolorem incidunt. Omnis, iure tempora
-      doloribus, alias quibusdam rerum soluta maxime nostrum deleniti hic nisi
-      vero!
-    </p>
-    <p>
-      Pariatur nisi dignissimos magnam corrupti dolores earum facere enim
-      doloremque aspernatur, porro laudantium deserunt iste eaque impedit ut
-      animi dolorem mollitia omnis facilis voluptatibus, nemo quam ex! Ducimus,
-      veritatis culpa!
-    </p>
+
+    <h2 id="lists">Lists</h2>
+    <a href="#">topo</a>
 
     <h3>Ordered List</h3>
     <ol>
@@ -100,5 +89,57 @@
       <li>C++</li>
       <li>Java</li>
     </ul>
+
+    <h3>Definition List</h3>
+    <dl>
+      <dt>Python</dt>
+      <dd>Uma linguagem de programação</dd>
+
+      <dt>C++</dt>
+      <dd>Uma linguagem de programação</dd>
+
+      <dt>Java</dt>
+      <dd>Uma linguagem de programação</dd>
+    </dl>
   </body>
 </html>
+
+<h2 id="tables">Tabela</h2>
+<hr />
+<a href="#">topo</a>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Nome</th>
+    <th>Email</th>
+  </tr>
+  <tr>
+    <td>10010</td>
+    <td>Fulano</td>
+    <td>fulano@email.com</td>
+  </tr>
+  <tr>
+    <td>20020</td>
+    <td>Sicrano</td>
+    <td>sicrano@email.com</td>
+  </tr>
+</table>
+
+<table border="1" cellspacing="0" cellpadding="5">
+  <tr>
+    <th>ID</th>
+    <th>Nome</th>
+    <th>Email</th>
+  </tr>
+  <tr>
+    <td>10010</td>
+    <td>Fulano</td>
+    <td>fulano@email.com</td>
+  </tr>
+  <tr>
+    <td>20020</td>
+    <td>Sicrano</td>
+    <td>sicrano@email.com</td>
+  </tr>
+</table>

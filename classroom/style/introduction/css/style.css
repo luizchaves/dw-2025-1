@@ -1,0 +1,17 @@
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+h1 {
+  text-align: center;
+  color: red;
+}
+
+#first-paragraph {
+  text-decoration: underline;
+}
+
+.text-blue {
+  color: blue;
+}

@@ -3,7 +3,7 @@ import { hosts } from './data.js';
 function createHostCard(host) {
     const hostCard = `
         <div class="col-md-4 mb-4">
-          <div id="" class="card host-card">
+          <div id="host-${host.id}" class="card host-card">
             <div class="card-body">
               <h5 class="card-title">${host.name}</h5>
               <h6 class="card-subtitle mb-2 text-muted">IP: ${host.ip}</h6>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual - Sua coleção de livros online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // Configuração do Tailwind para modo escuro
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-slate-800 min-h-screen transition-colors duration-300">
+    <!-- Cabeçalho com Navegação -->
+    <header class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50 transition-colors duration-300">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-book-open text-3xl text-indigo-600 dark:text-indigo-400 mr-3"></i>
+                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Biblioteca Virtual</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <div class="flex items-baseline space-x-4">
+                        <a href="#" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
+                        <a href="#catalogo" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Catálogo</a>
+                        <a href="#contato" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contato</a>
+                    </div>
+                    <!-- Toggle Dark Mode -->
+                    <button id="theme-toggle" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-moon dark:hidden text-lg"></i>
+                        <i class="fas fa-sun hidden dark:block text-lg"></i>
+                    </button>
+                </div>
+                <!-- Menu mobile -->
+                <div class="md:hidden flex items-center space-x-2">
+                    <button id="theme-toggle-mobile" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-moon dark:hidden text-lg"></i>
+                        <i class="fas fa-sun hidden dark:block text-lg"></i>
+                    </button>
+                    <button class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Título Principal de Destaque -->
+    <section class="bg-gradient-to-r from-indigo-600 to-purple-700 dark:from-gray-800 dark:to-gray-900 text-white py-20 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                Descubra Mundos
+                <span class="block text-yellow-300 dark:text-yellow-400">Infinitos</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-indigo-100 dark:text-gray-300 max-w-3xl mx-auto">
+                Explore nossa vasta coleção de livros e mergulhe em histórias que transformam vidas
+            </p>
+            <button class="bg-yellow-400 dark:bg-yellow-500 text-gray-800 dark:text-gray-900 px-8 py-4 rounded-full text-lg font-semibold hover:bg-yellow-300 dark:hover:bg-yellow-400 transition-colors shadow-lg">
+                <i class="fas fa-search mr-2"></i>
+                Explorar Catálogo
+            </button>
+        </div>
+    </section>
+
+    <!-- Seção de Livros em Destaque -->
+    <section id="catalogo" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Livros em Destaque</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Descubra nossa seleção especial de obras que marcaram época e continuam inspirando leitores
+                </p>
+            </div>
+
+            <!-- Grid de Livros -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Livro 1 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg dark:shadow-gray-900/30 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900/50 transition-all duration-300">
+                    <div class="bg-gradient-to-br from-red-400 to-red-600 h-48 flex items-center justify-center">
+                        <i class="fas fa-book text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Dom Casmurro</h3>
+                        <p class="text-indigo-600 dark:text-indigo-400 font-medium mb-3">Machado de Assis</p>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            Um dos maiores clássicos da literatura brasileira, narrando a história de Bentinho e Capitu em uma trama envolvente sobre amor, ciúme e dúvida.
+                        </p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Romance</span>
+                            <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors">
+                                <i class="fas fa-arrow-right mr-1"></i>
+                                Ler mais
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Livro 2 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg dark:shadow-gray-900/30 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900/50 transition-all duration-300">
+                    <div class="bg-gradient-to-br from-green-400 to-green-600 h-48 flex items-center justify-center">
+                        <i class="fas fa-book text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">O Alquimista</h3>
+                        <p class="text-indigo-600 dark:text-indigo-400 font-medium mb-3">Paulo Coelho</p>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            Uma jornada inspiradora sobre um jovem pastor que busca seu tesouro pessoal, descobrindo as lições mais importantes da vida pelo caminho.
+                        </p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Ficção</span>
+                            <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors">
+                                <i class="fas fa-arrow-right mr-1"></i>
+                                Ler mais
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Livro 3 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg dark:shadow-gray-900/30 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900/50 transition-all duration-300">
+                    <div class="bg-gradient-to-br from-purple-400 to-purple-600 h-48 flex items-center justify-center">
+                        <i class="fas fa-book text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">1984</h3>
+                        <p class="text-indigo-600 dark:text-indigo-400 font-medium mb-3">George Orwell</p>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            Uma obra distópica que retrata uma sociedade totalitária, explorando temas como vigilância, controle e a luta pela liberdade individual.
+                        </p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Distopia</span>
+                            <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors">
+                                <i class="fas fa-arrow-right mr-1"></i>
+                                Ler mais
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Livro 4 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg dark:shadow-gray-900/30 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900/50 transition-all duration-300">
+                    <div class="bg-gradient-to-br from-blue-400 to-blue-600 h-48 flex items-center justify-center">
+                        <i class="fas fa-book text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Sapiens</h3>
+                        <p class="text-indigo-600 dark:text-indigo-400 font-medium mb-3">Yuval Noah Harari</p>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            Uma fascinante análise da história da humanidade, desde os primórdios até os desafios do século XXI, revelando como nos tornamos a espécie dominante.
+                        </p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">História</span>
+                            <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors">
+                                <i class="fas fa-arrow-right mr-1"></i>
+                                Ler mais
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Livro 5 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg dark:shadow-gray-900/30 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900/50 transition-all duration-300">
+                    <div class="bg-gradient-to-br from-yellow-400 to-orange-500 h-48 flex items-center justify-center">
+                        <i class="fas fa-book text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">O Pequeno Príncipe</h3>
+                        <p class="text-indigo-600 dark:text-indigo-400 font-medium mb-3">Antoine de Saint-Exupéry</p>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            Uma obra atemporal que, através da simplicidade, nos ensina sobre amor, amizade e o que realmente importa na vida.
+                        </p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Infantil</span>
+                            <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors">
+                                <i class="fas fa-arrow-right mr-1"></i>
+                                Ler mais
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Livro 6 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg dark:shadow-gray-900/30 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900/50 transition-all duration-300">
+                    <div class="bg-gradient-to-br from-pink-400 to-red-500 h-48 flex items-center justify-center">
+                        <i class="fas fa-book text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Orgulho e Preconceito</h3>
+                        <p class="text-indigo-600 dark:text-indigo-400 font-medium mb-3">Jane Austen</p>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            Um romance clássico que retrata com elegância as questões sociais e amorosas da Inglaterra do século XIX, através da história de Elizabeth Bennet.
+                        </p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Romance</span>
+                            <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors">
+                                <i class="fas fa-arrow-right mr-1"></i>
+                                Ler mais
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botão Ver Mais -->
+            <div class="text-center mt-12">
+                <button class="bg-indigo-600 dark:bg-indigo-500 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors shadow-lg">
+                    <i class="fas fa-plus mr-2"></i>
+                    Ver Mais Livros
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Estatísticas -->
+    <section class="bg-white dark:bg-gray-800 py-16 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="p-6">
+                    <i class="fas fa-book text-4xl text-indigo-600 dark:text-indigo-400 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">10,000+</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Livros Disponíveis</p>
+                </div>
+                <div class="p-6">
+                    <i class="fas fa-users text-4xl text-indigo-600 dark:text-indigo-400 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">50,000+</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Leitores Ativos</p>
+                </div>
+                <div class="p-6">
+                    <i class="fas fa-star text-4xl text-indigo-600 dark:text-indigo-400 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">4.9</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Avaliação Média</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer id="contato" class="bg-gray-800 dark:bg-gray-900 text-white py-12 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Logo e Descrição -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-book-open text-2xl text-indigo-400 dark:text-indigo-300 mr-2"></i>
+                        <h3 class="text-xl font-bold">Biblioteca Virtual</h3>
+                    </div>
+                    <p class="text-gray-300 dark:text-gray-400 mb-4 max-w-md">
+                        Conectando leitores a histórias extraordinárias. Descubra, explore e se inspire com nossa vasta coleção de livros digitais.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 dark:text-gray-400 hover:text-indigo-400 dark:hover:text-indigo-300 transition-colors">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 dark:text-gray-400 hover:text-indigo-400 dark:hover:text-indigo-300 transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 dark:text-gray-400 hover:text-indigo-400 dark:hover:text-indigo-300 transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 dark:text-gray-400 hover:text-indigo-400 dark:hover:text-indigo-300 transition-colors">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Links Rápidos -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Links Rápidos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 dark:text-gray-400 hover:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Sobre Nós</a></li>
+                        <li><a href="#" class="text-gray-300 dark:text-gray-400 hover:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Catálogo</a></li>
+                        <li><a href="#" class="text-gray-300 dark:text-gray-400 hover:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Novidades</a></li>
+                        <li><a href="#" class="text-gray-300 dark:text-gray-400 hover:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Favoritos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contato -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contato</h4>
+                    <ul class="space-y-2 text-gray-300 dark:text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-indigo-400 dark:text-indigo-300"></i>
+                            <span>contato@biblioteca.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-2 text-indigo-400 dark:text-indigo-300"></i>
+                            <span>(11) 1234-5678</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2 text-indigo-400 dark:text-indigo-300"></i>
+                            <span>São Paulo, SP</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="border-t border-gray-700 dark:border-gray-600 pt-8 mt-8 text-center">
+                <p class="text-gray-400 dark:text-gray-500">
+                    © 2025 Biblioteca Virtual. Todos os direitos reservados.
+                    <span class="mx-2">|</span>
+                    <a href="#" class="hover:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Política de Privacidade</a>
+                    <span class="mx-2">|</span>
+                    <a href="#" class="hover:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Termos de Uso</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script para scroll suave e tema escuro -->
+    <script>
+        // Função para alternar tema
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Carregar tema salvo
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
+        // Inicializar tema quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTheme();
+
+            // Adicionar event listeners para os botões de tema
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
+            if (themeToggleMobile) {
+                themeToggleMobile.addEventListener('click', toggleTheme);
+            }
+        });
+
+        // Scroll suave para links âncora
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

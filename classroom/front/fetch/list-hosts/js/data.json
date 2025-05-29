@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "servidor01.exemplo.com",
+    "ip": "192.168.1.100",
+    "description": "Servidor Web principal",
+    "status": true
+  },
+  {
+    "id": 2,
+    "name": "bd.exemplo.com",
+    "ip": "192.168.1.101",
+    "description": "Servidor de Banco de Dados",
+    "status": true
+  },
+  {
+    "id": 3,
+    "name": "app.exemplo.com",
+    "ip": "192.168.1.102",
+    "description": "Servidor de Aplicações",
+    "status": false
+  },
+  {
+    "id": 4,
+    "name": "mail.exemplo.com",
+    "ip": "192.168.1.103",
+    "description": "Servidor de Email",
+    "status": true
+  },
+  {
+    "id": 5,
+    "name": "backup.exemplo.com",
+    "ip": "192.168.1.104",
+    "description": "Servidor de Backup",
+    "status": true
+  },
+  {
+    "id": 6,
+    "name": "files.exemplo.com",
+    "ip": "192.168.1.105",
+    "description": "Servidor de Arquivos",
+    "status": false
+  }
+]

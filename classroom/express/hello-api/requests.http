@@ -1,5 +1,28 @@
-###
+### 404 Error Handling Example
 
-GET http://localhost:3000/
+GET http://localhost:3000/error-404
 
-###
+### GET /api/hello/en Endpoint => Hello, IFPB! (query string / query parameter)
+
+GET http://localhost:3000/api/hello/en?name=IFPB
+
+### GET /api/hello/en Endpoint without name
+
+GET http://localhost:3000/api/hello/en
+
+### GET /api/hello/pt Endpoint => Olá, IFPB! (route parameter)
+
+GET http://localhost:3000/api/hello/pt/IFPB
+
+### GET /api/hello/pt Endpoint without name
+
+GET http://localhost:3000/api/hello/pt
+
+### POST /api/hello/es Endpoint => Holla, IFPB! (body parameter)
+
+POST http://localhost:3000/api/hello/es
+Content-Type: application/json
+
+{
+  "name": "IFPB"
+}

@@ -1,0 +1,15 @@
+###
+
+GET http://localhost:3000/api/ping?host=8.8.8.8
+
+###
+
+GET http://localhost:3000/api/ping?host=8.8.8.8&count=1
+
+###
+
+GET http://localhost:3000/api/ping?host=a
+
+###
+
+GET http://localhost:3000/api/ping

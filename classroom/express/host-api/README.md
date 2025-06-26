@@ -21,19 +21,48 @@ host-api/
 
 - Node.js (versão 18 ou superior)
 - npm (geralmente instalado junto com o Node.js)
+- Docker e Docker Compose (para execução com containers)
 
 ## 🚀 Como executar
 
-### 1. Instalar dependências
+### Opção 1: Execução tradicional com Node.js
+
+#### 1. Instalar dependências
 
 ```bash
 npm install
 ```
 
-### 2. Iniciar o servidor
+#### 2. Iniciar o servidor
 
 ```bash
 npm start
+```
+
+### Opção 2: Execução com Docker
+
+#### 1. Executar em modo desenvolvimento (com hot reload)
+
+```bash
+docker-compose up
+```
+
+#### 2. Executar em modo produção
+
+```bash
+docker-compose -f docker-compose.prod.yml up
+```
+
+#### 3. Executar em background
+
+```bash
+docker-compose up -d
+```
+
+#### 4. Parar os containers
+
+```bash
+docker-compose down
 ```
 
 O servidor será iniciado em `http://localhost:3000` por padrão.

@@ -1,0 +1,66 @@
+@server=http://localhost:3000
+@createdHostId = {{createHost.response.body.$.id}}
+
+### Create a host
+# @name createHost
+POST {{server}}/api/hosts
+Content-Type: application/json
+
+{
+  "name": "DNS Server",
+  "address": "1.1.1.1"
+}
+
+### Create a host without name or address
+POST {{server}}/api/hosts
+Content-Type: application/json
+
+{
+  "name": "DNS Server"
+}
+
+### Read hosts
+GET {{server}}/api/hosts
+
+### Read a host by name
+GET {{server}}/api/hosts?name=Google%20DNS
+# GET {{server}}/api/hosts?name=DNS
+# GET {{server}}/api/hosts?name=dns
+
+### Read a host by id
+GET {{server}}/api/hosts/{{createdHostId}}
+
+### Read a host by id with invalid id
+GET {{server}}/api/hosts/x
+
+### Update a host
+PUT {{server}}/api/hosts/{{createdHostId}}
+Content-Type: application/json
+
+{
+  "name": "Cloudflare DNS",
+  "address": "1.1.1.1"
+}
+
+### Update a host without name or address
+PUT {{server}}/api/hosts/{{createdHostId}}
+Content-Type: application/json
+
+{
+  "name": "Cloudflare DNS"
+}
+
+### Update a host with invalid id
+PUT {{server}}/api/hosts/x
+Content-Type: application/json
+
+{
+  "name": "Cloudflare DNS",
+  "address": "1.1.1.1"
+}
+
+### Delete a host
+DELETE {{server}}/api/hosts/{{createdHostId}}
+
+### Delete a host with invalid id
+DELETE {{server}}/api/hosts/x

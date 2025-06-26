@@ -92,7 +92,7 @@ router.delete('/hosts/:id', (req, res) => {
 
   hosts.splice(index, 1);
 
-  return res.send(204);
+  return res.status(204).end();
 });
 
 // Error handling for 404

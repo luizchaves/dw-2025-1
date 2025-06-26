@@ -13,3 +13,5 @@ app.use(express.static('public'));
 app.use('/api', router);
 
 app.listen(3000, () => console.log('Server is running'));
+
+export default app;

@@ -1,6 +1,5 @@
 import express from 'express';
-import { v4 as uuidv4 } from 'uuid';
-import { hosts } from './data/hosts.js';
+import Host from './models/Hosts.js';
 
 /**
  * @swagger
@@ -44,20 +43,20 @@ const router = express.Router();
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.post('/hosts', (req, res) => {
+router.post('/hosts', async (req, res) => {
   const { name, address } = req.body;
 
   if (!name || !address) {
     throw new HttpError('Error when passing parameters');
   }
 
-  const id = uuidv4();
+  try {
+    const createdHost = await Host.create({ name, address });
 
-  const newHost = { id, name, address };
-
-  hosts.push(newHost);
-
-  res.status(201).json(newHost);
+    return res.status(201).json(createdHost);
+  } catch (error) {
+    throw new HttpError('Unable to create a host');
+  }
 });
 
 /**
@@ -87,24 +86,22 @@ router.post('/hosts', (req, res) => {
  *               items:
  *                 $ref: '#/components/schemas/Host'
  */
-router.get('/hosts', (req, res) => {
-  const where = req.query;
+router.get('/hosts', async (req, res) => {
+  const { name } = req.query;
 
-  if (where) {
-    const field = Object.keys(where)[0];
+  try {
+    if (name) {
+      const filteredHosts = await Host.read({ name });
 
-    const value = where[field];
+      return res.json(filteredHosts);
+    }
 
-    const filteredHosts = hosts.filter((host) =>
-      host[field] instanceof String
-        ? host[field].toLowerCase().includes(value.toLowerCase())
-        : host[field] == value
-    );
+    const hosts = await Host.read();
 
-    return res.json(filteredHosts);
+    return res.json(hosts);
+  } catch (error) {
+    throw new HttpError('Unable to read hosts');
   }
-
-  return res.json(hosts);
 });
 
 /**
@@ -135,16 +132,20 @@ router.get('/hosts', (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/hosts/:id', (req, res) => {
+router.get('/hosts/:id', async (req, res) => {
   const { id } = req.params;
 
-  const index = hosts.findIndex((host) => host.id === id);
+  try {
+    const host = await Host.readById(id);
 
-  if (!hosts[index]) {
+    if (host) {
+      return res.json(host);
+    } else {
+      throw new HttpError('Host not found');
+    }
+  } catch (error) {
     throw new HttpError('Unable to read a host');
   }
-
-  return res.json(hosts[index]);
 });
 
 /**
@@ -181,26 +182,22 @@ router.get('/hosts/:id', (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.put('/hosts/:id', (req, res) => {
+router.put('/hosts/:id', async (req, res) => {
   const { name, address } = req.body;
 
-  const { id } = req.params;
+  const id = req.params.id;
 
   if (!name || !address) {
     throw new HttpError('Error when passing parameters');
   }
 
-  const newHost = { id, name, address };
+  try {
+    const updatedHost = await Host.update({ id, name, address });
 
-  const index = hosts.findIndex((host) => host.id === id);
-
-  if (!hosts[index]) {
+    return res.json(updatedHost);
+  } catch (error) {
     throw new HttpError('Unable to update a host');
   }
-
-  hosts[index] = newHost;
-
-  return res.json(newHost);
 });
 
 /**
@@ -227,18 +224,16 @@ router.put('/hosts/:id', (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.delete('/hosts/:id', (req, res) => {
+router.delete('/hosts/:id', async (req, res) => {
   const { id } = req.params;
 
-  const index = hosts.findIndex((host) => host.id === id);
+  try {
+    await Host.remove(id);
 
-  if (!hosts[index]) {
+    return res.status(204).end();
+  } catch (error) {
     throw new HttpError('Unable to delete a host');
   }
-
-  hosts.splice(index, 1);
-
-  return res.status(204).end();
 });
 
 // Error handling for 404

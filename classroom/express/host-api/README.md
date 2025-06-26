@@ -1,6 +1,21 @@
-# Ping API
+# Host Monitor API
 
-Uma API simples desenvolvida com Express.js que fornece um endpoint de ping para verificar o status e tempo de resposta do servidor.
+API para monitoramento de hosts desenvolvida com Express.js que permite gerenciar uma lista de hosts com operações CRUD completas.
+
+```
+host-api/
+├── src/
+│   ├── index.js         # Servidor principal da aplicação
+│   ├── routes.js        # Definição das rotas da API
+│   ├── swagger.js       # Configuração da documentação Swagger
+│   └── data/
+│       └── hosts.js     # Dados dos hosts em memória
+├── public/
+│   └── index.html       # Página inicial
+├── package.json         # Dependências do projeto
+├── requests.http        # Arquivo com exemplos de requisições
+└── README.md           # Este arquivo
+```
 
 ## 📋 Pré-requisitos
 
@@ -23,77 +38,165 @@ npm start
 
 O servidor será iniciado em `http://localhost:3000` por padrão.
 
+## 📚 Documentação da API
+
+### Swagger UI
+Acesse `http://localhost:3000/api-docs` para visualizar a documentação interativa da API gerada automaticamente com Swagger.
+
+A documentação inclui:
+- 📋 Lista completa de todos os endpoints
+- 🔧 Interface para testar as requisições diretamente no navegador
+- 📖 Exemplos de request/response para cada endpoint
+- 🏷️ Esquemas de dados detalhados
+
 ## 🔗 Endpoints da API
 
-### Health Check
+### Hosts Management
 
-| Método   | Path    | Descrição                                    |
-|----------|---------|----------------------------------------------|
-| `GET`    | `/ping` | Retorna pong com timestamp para health check |
+| Método   | Path              | Descrição                    |
+|----------|-------------------|------------------------------|
+| `POST`   | `/api/hosts`      | Criar um novo host           |
+| `GET`    | `/api/hosts`      | Listar todos os hosts        |
+| `GET`    | `/api/hosts/:id`  | Buscar um host específico    |
+| `PUT`    | `/api/hosts/:id`  | Atualizar um host existente  |
+| `DELETE` | `/api/hosts/:id`  | Deletar um host              |
+
+### Query Parameters (GET /api/hosts)
+- `name` - Filtrar hosts por nome (busca parcial)
+- `address` - Filtrar hosts por endereço
 
 ## 🧪 Testando a API
 
 ### Usando curl
 
+#### Criar um novo host
 ```bash
-curl http://localhost:3000/ping?host=localhost
+curl -X POST http://localhost:3000/api/hosts \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "DNS Server",
+    "address": "1.1.1.1"
+  }'
 ```
 
-Resposta:
+#### Listar todos os hosts
+```bash
+curl http://localhost:3000/api/hosts
+```
+
+#### Buscar host por ID
+```bash
+curl http://localhost:3000/api/hosts/{host-id}
+```
+
+#### Atualizar um host
+```bash
+curl -X PUT http://localhost:3000/api/hosts/{host-id} \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Cloudflare DNS",
+    "address": "1.1.1.1"
+  }'
+```
+
+#### Deletar um host
+```bash
+curl -X DELETE http://localhost:3000/api/hosts/{host-id}
+```
+
+### Usando o arquivo requests.http
+
+O projeto inclui um arquivo `requests.http` com exemplos de todas as requisições. Você pode usar extensões como REST Client no VS Code para executar essas requisições diretamente.
+
+## 📊 Modelo de Dados
+
+### Host
 ```json
 {
-  "inputHost": "localhost",
-  "host": "localhost",
-  "alive": true,
-  "output": "PING localhost (127.0.0.1): 56 data bytes\n64 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.110 ms\n64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.185 ms\n64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.149 ms\n\n--- localhost ping statistics ---\n3 packets transmitted, 3 packets received, 0.0% packet loss\nround-trip min/avg/max/stddev = 0.110/0.148/0.185/0.031 ms\n",
-  "time": 0.11,
-  "times": [
-    0.11,
-    0.185,
-    0.149
-  ],
-  "min": "0.110",
-  "max": "0.185",
-  "avg": "0.148",
-  "stddev": "0.031",
-  "packetLoss": "0.000",
-  "numeric_host": "127.0.0.1"
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "name": "DNS Server",
+  "address": "1.1.1.1"
 }
 ```
 
-### Usando o navegador
+### Campos Obrigatórios
+- `name` (string) - Nome descritivo do host
+- `address` (string) - Endereço IP ou hostname
 
-Acesse `http://localhost:3000/ping?host=localhost` diretamente no navegador para testar o endpoint.
+## ⚠️ Tratamento de Erros
 
-## 📊 Casos de Uso
+### Status Codes
+| Status | Descrição |
+|--------|-----------|
+| `200`  | Sucesso |
+| `201`  | Criado com sucesso |
+| `204`  | Deletado com sucesso |
+| `400`  | Erro de validação ou recurso não encontrado |
+| `404`  | Endpoint não encontrado |
+| `500`  | Erro interno do servidor |
 
-Esta API é útil para:
+### Exemplos de Erros
+```json
+{
+  "message": "Error when passing parameters"
+}
+```
 
-- **Health checks** - Verificar se o servidor está respondendo
-- **Monitoramento** - Sistemas de monitoramento podem usar este endpoint
-- **Load balancers** - Verificar se a instância está saudável
-- **Testes de conectividade** - Verificar latência e disponibilidade
+```json
+{
+  "message": "Unable to read a host"
+}
+```
+
+## 🧪 Executando Testes
+
+```bash
+# Executar testes uma vez
+npm test
+
+# Executar testes em modo watch
+npm run test:watch
+```
 
 ## 🛠️ Tecnologias Utilizadas
 
 - **Express.js** - Framework web para Node.js
-- **JavaScript ES6+** - Linguagem de programação
+- **UUID** - Geração de IDs únicos
+- **Morgan** - Logger de requisições HTTP
+- **Swagger JSDoc** - Geração de documentação API
+- **Swagger UI Express** - Interface visual para documentação
+- **Supertest** - Testes de integração HTTP
+- **Node.js Test Runner** - Testes nativos do Node.js
 
 ## 🔧 Desenvolvimento
 
-Para executar em modo de desenvolvimento com auto-reload:
-
-```bash
-npm run dev
-```
-
-## 📝 Scripts Disponíveis
-
+### Scripts Disponíveis
 - `npm start` - Inicia o servidor em modo produção
-- `npm run dev` - Inicia o servidor em modo desenvolvimento (se configurado)
+- `npm run dev` - Inicia o servidor em modo desenvolvimento com auto-reload
+- `npm test` - Executa os testes
+- `npm run test:watch` - Executa os testes em modo watch
 
-## 🌐 Status Codes
+### Estrutura de Arquivos
+- `src/index.js` - Configuração principal do servidor Express
+- `src/routes.js` - Definição das rotas e lógica de negócio
+- `src/swagger.js` - Configuração da documentação Swagger
+- `src/data/hosts.js` - Armazenamento em memória dos hosts
 
-| Status | Descrição |
-|--------|-----------|
-| `200`  | Sucesso - servidor funcionando corretamente |
+## 📝 Próximas Melhorias
+
+- [ ] Persistência em banco de dados
+- [ ] Autenticação e autorização
+- [ ] Validação mais robusta de dados
+- [ ] Logs estruturados
+- [ ] Rate limiting
+- [ ] Versionamento da API
+- [ ] Dockerização
+- [ ] Testes de carga
+
+## 🤝 Contribuindo
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request

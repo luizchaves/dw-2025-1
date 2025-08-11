@@ -6,14 +6,16 @@
     "dev": "node --watch src/index.js",
     "test": "node --test src/routes.test.js",
     "test:watch": "node --test --watch src/routes.test.js",
-    "db:reload": "npm run db:drop && npm run db:load",
-    "db:load": "node src/database/load.js",
-    "db:drop": "[ -e src/database/db.sqlite ] && rm src/database/db.sqlite"
+    "db:reset": "prisma migrate reset --force"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@prisma/client": "^6.13.0",
     "express": "^5.1.0",
     "morgan": "^1.10.0",
-    "sqlite-async": "^1.2.2",
+    "prisma": "^6.13.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^11.1.0"

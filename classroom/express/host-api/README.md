@@ -82,13 +82,28 @@ A documentação inclui:
 
 ### Hosts Management
 
-| Método   | Path              | Descrição                    |
-|----------|-------------------|------------------------------|
-| `POST`   | `/api/hosts`      | Criar um novo host           |
-| `GET`    | `/api/hosts`      | Listar todos os hosts        |
-| `GET`    | `/api/hosts/:id`  | Buscar um host específico    |
-| `PUT`    | `/api/hosts/:id`  | Atualizar um host existente  |
-| `DELETE` | `/api/hosts/:id`  | Deletar um host              |
+| Método   | Path                           | Descrição                               |
+|----------|--------------------------------|-----------------------------------------|
+| `POST`   | `/api/hosts`                   | Criar um novo host                      |
+| `GET`    | `/api/hosts`                   | Listar todos os hosts                   |
+| `GET`    | `/api/hosts/:id`               | Buscar um host específico               |
+| `PUT`    | `/api/hosts/:id`               | Atualizar um host existente             |
+| `DELETE` | `/api/hosts/:id`               | Deletar um host                         |
+
+### Pings Management
+
+| Método   | Path                           | Descrição                               |
+|----------|--------------------------------|-----------------------------------------|
+| `POST`   | `/api/hosts/:hostId/pings/:count` | Executar ping em um host específico     |
+| `GET`    | `/api/hosts/:hostId/pings`     | Listar pings de um host específico      |
+| `GET`    | `/api/pings`                   | Listar todos os pings de todos os hosts |
+
+### Tags Management
+
+| Método   | Path                           | Descrição                               |
+|----------|--------------------------------|-----------------------------------------|
+| `GET`    | `/api/tags`                    | Listar todas as tags disponíveis       |
+| `GET`    | `/api/tags/:tag/hosts`         | Listar hosts filtrados por tag         |
 
 ### Query Parameters (GET /api/hosts)
 - `name` - Filtrar hosts por nome (busca parcial)
@@ -98,39 +113,77 @@ A documentação inclui:
 
 ### Usando curl
 
-#### Criar um novo host
+#### Hosts
+
+##### Criar um novo host
 ```bash
 curl -X POST http://localhost:3000/api/hosts \
   -H "Content-Type: application/json" \
   -d '{
     "name": "DNS Server",
-    "address": "1.1.1.1"
+    "address": "1.1.1.1",
+    "tags": ["production", "dns"]
   }'
 ```
 
-#### Listar todos os hosts
+##### Listar todos os hosts
 ```bash
 curl http://localhost:3000/api/hosts
 ```
 
-#### Buscar host por ID
+##### Buscar host por ID
 ```bash
 curl http://localhost:3000/api/hosts/{host-id}
 ```
 
-#### Atualizar um host
+##### Filtrar hosts por nome
+```bash
+curl "http://localhost:3000/api/hosts?name=DNS"
+```
+
+##### Atualizar um host
 ```bash
 curl -X PUT http://localhost:3000/api/hosts/{host-id} \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Cloudflare DNS",
-    "address": "1.1.1.1"
+    "address": "1.1.1.1",
+    "tags": ["production", "dns", "cloudflare"]
   }'
 ```
 
-#### Deletar um host
+##### Deletar um host
 ```bash
 curl -X DELETE http://localhost:3000/api/hosts/{host-id}
+```
+
+#### Pings
+
+##### Executar ping em um host
+```bash
+curl -X POST http://localhost:3000/api/hosts/{host-id}/pings/4
+```
+
+##### Listar pings de um host específico
+```bash
+curl http://localhost:3000/api/hosts/{host-id}/pings
+```
+
+##### Listar todos os pings
+```bash
+curl http://localhost:3000/api/pings
+```
+
+#### Tags
+
+##### Listar todas as tags
+```bash
+curl http://localhost:3000/api/tags
+```
+
+##### Listar hosts por tag
+```bash
+curl http://localhost:3000/api/tags/production/hosts
 ```
 
 ### Usando o arquivo requests.http
@@ -144,13 +197,56 @@ O projeto inclui um arquivo `requests.http` com exemplos de todas as requisiçõ
 {
   "id": "123e4567-e89b-12d3-a456-426614174000",
   "name": "DNS Server",
-  "address": "1.1.1.1"
+  "address": "1.1.1.1",
+  "tags": [
+    {
+      "id": "456e7890-e89b-12d3-a456-426614174002",
+      "name": "production",
+      "createdAt": "2025-08-11T10:30:00.000Z"
+    }
+  ],
+  "createdAt": "2025-08-11T10:30:00.000Z",
+  "updatedAt": "2025-08-11T10:30:00.000Z"
+}
+```
+
+### Ping
+```json
+{
+  "id": "987fcdeb-51a2-4b3d-c456-426614174001",
+  "host": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "name": "DNS Server",
+    "address": "1.1.1.1"
+  },
+  "output": "PING 1.1.1.1 (1.1.1.1): 56 data bytes\n64 bytes from 1.1.1.1: icmp_seq=0 ttl=59 time=12.345 ms",
+  "stats": {
+    "transmitted": 4,
+    "received": 4,
+    "time": 3012.5
+  },
+  "createdAt": "2025-08-11T10:30:00.000Z"
+}
+```
+
+### Tag
+```json
+{
+  "id": "456e7890-e89b-12d3-a456-426614174002",
+  "name": "production",
+  "createdAt": "2025-08-11T10:30:00.000Z"
 }
 ```
 
 ### Campos Obrigatórios
+
+#### Host
 - `name` (string) - Nome descritivo do host
 - `address` (string) - Endereço IP ou hostname
+
+#### Ping
+- `hostId` (string) - ID do host para executar o ping
+- `count` (integer) - Número de pings a executar (1-100)
 
 ## ⚠️ Tratamento de Erros
 
@@ -213,14 +309,19 @@ npm run test:watch
 
 ## 📝 Próximas Melhorias
 
-- [ ] Persistência em banco de dados
+- [x] ~~Persistência em banco de dados~~ (Implementado com Prisma)
+- [x] ~~Funcionalidade de ping~~ (Implementado)
+- [x] ~~Sistema de tags~~ (Implementado)
 - [ ] Autenticação e autorização
 - [ ] Validação mais robusta de dados
 - [ ] Logs estruturados
 - [ ] Rate limiting
 - [ ] Versionamento da API
-- [ ] Dockerização
 - [ ] Testes de carga
+- [ ] Dashboard web para visualização
+- [ ] Alertas e notificações
+- [ ] Histórico de uptime/downtime
+- [ ] Métricas de performance
 
 ## 🤝 Contribuindo
 

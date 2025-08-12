@@ -13,6 +13,7 @@ const newHost = {
 const updatedHost = {
   name: 'Cloudflare DNS',
   address: '1.1.1.1',
+  tags: ['DNS', 'Cloudflare'],
 };
 
 describe('Moniotr App', () => {
@@ -128,6 +129,87 @@ describe('Moniotr App', () => {
         assert.strictEqual(response.statusCode, 400);
 
         assert.strictEqual(response.body.message, 'Unable to delete a host');
+      });
+    });
+  });
+
+  describe('Host Ping Endpoints', () => {
+    describe('POST /api/hosts/:hostId/pings/:count', () => {
+      it('should create a ping with valid host', async () => {
+        let response = await request(app).post('/api/hosts').send(newHost);
+
+        createdHost = response.body;
+
+        response = await request(app).post(`/api/hosts/${createdHost.id}/pings/3`);
+
+        assert.strictEqual(response.statusCode, 200);
+
+        assert.strictEqual(Array.isArray(response.body.icmps), true);
+        assert.strictEqual(response.body.icmps.length, 3);
+      });
+
+      it('should not create a ping with unknown ip', async () => {
+        let response = await request(app)
+          .post('/api/hosts')
+          .send({ name: 'unknown host', address: '172.16.0.1' });
+
+        createdHost = response.body;
+
+        response = await request(app).post(`/api/hosts/${createdHost.id}/pings/3`);
+
+        assert.strictEqual(response.statusCode, 400);
+      });
+
+      it('should not create a ping with unknown domain', async () => {
+        let response = await request(app)
+          .post('/api/hosts')
+          .send({ name: 'unknown host', address: 'www.unknown-host.com.br' });
+
+        createdHost = response.body;
+
+        response = await request(app).post(`/api/hosts/${createdHost.id}/pings/3`);
+
+        assert.strictEqual(response.statusCode, 400);
+      });
+    });
+
+    describe('GET /api/hosts/:hostId/pings', () => {
+      it('should show a ping by hostId', async () => {
+        const response = await request(app).get(
+          `/api/hosts/${createdHost.id}/pings`
+        );
+
+        assert.strictEqual(response.statusCode, 200);
+      });
+    });
+  });
+
+  describe('Tag Endpoints', () => {
+    describe('GET /api/tags', () => {
+      it('should show tags', async () => {
+        const response = await request(app).get(`/api/tags`);
+
+        assert.strictEqual(response.statusCode, 200);
+      });
+    });
+
+    describe('GET /api/tags/:tagName/hosts', () => {
+      it('should show hosts by tagName', async () => {
+        const response = await request(app).get(
+          `/api/tags/${createdHost.id}/hosts`
+        );
+
+        assert.strictEqual(response.statusCode, 200);
+      });
+    });
+  });
+
+  describe('Ping Endpoints', () => {
+    describe('GET /api/pings', () => {
+      it('should show pings', async () => {
+        const response = await request(app).get(`/api/pings`);
+
+        assert.strictEqual(response.statusCode, 200);
       });
     });
   });

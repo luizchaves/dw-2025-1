@@ -8,7 +8,8 @@ Content-Type: application/json
 
 {
   "name": "DNS Server",
-  "address": "1.1.1.1"
+  "address": "1.1.1.1",
+  "tags": ["production", "dns"]
 }
 
 ### Create a host without name or address
@@ -39,7 +40,8 @@ Content-Type: application/json
 
 {
   "name": "Cloudflare DNS",
-  "address": "1.1.1.1"
+  "address": "1.1.1.1",
+  "tags": ["production", "dns", "cloudflare"]
 }
 
 ### Update a host without name or address
@@ -64,3 +66,24 @@ DELETE {{server}}/api/hosts/{{createdHostId}}
 
 ### Delete a host with invalid id
 DELETE {{server}}/api/hosts/x
+
+### Execute ping on a host (3 pings)
+POST {{server}}/api/hosts/{{createdHostId}}/pings/3
+
+### Execute ping with invalid count
+POST {{server}}/api/hosts/{{createdHostId}}/pings/abc
+
+### Get pings from a specific host
+GET {{server}}/api/hosts/{{createdHostId}}/pings
+
+### Get all pings
+GET {{server}}/api/pings
+
+### Get all tags
+GET {{server}}/api/tags
+
+### Get hosts by tag
+GET {{server}}/api/tags/production/hosts
+
+### Get hosts by nonexistent tag
+GET {{server}}/api/tags/nonexistent/hosts

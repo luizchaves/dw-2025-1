@@ -2,6 +2,7 @@ import express from 'express';
 import Host from './models/Hosts.js';
 import Ping from './models/Pings.js';
 import Tag from './models/Tags.js';
+import User from './models/Users.js';
 import { ping } from './lib/ping.js';
 
 /**
@@ -13,6 +14,8 @@ import { ping } from './lib/ping.js';
  *     description: API para execução e consulta de pings
  *   - name: Tags
  *     description: API para gerenciamento de tags
+ *   - name: Users
+ *     description: API para gerenciamento de usuários
  */
 
 class HttpError extends Error {
@@ -441,6 +444,57 @@ router.get('/pings', async (req, res) => {
     return res.json(pings);
   } catch (error) {
     throw new HttpError('Unable to read pings');
+  }
+});
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Criar um novo usuário
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserInput'
+ *     responses:
+ *       201:
+ *         description: Usuário criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Erro de validação - parâmetros obrigatórios não fornecidos ou email já em uso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.post('/users', async (req, res) => {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    throw new HttpError('Error when passing parameters');
+  }
+
+  try {
+    const createdUser = await User.create({ name, email, password });
+
+    delete createdUser.password;
+
+    res.status(201).json(createdUser);
+  } catch (error) {
+    if (
+      error.message.toLowerCase().includes('unique') &&
+      error.message.toLowerCase().includes('email')
+    ) {
+      throw new HttpError('Email already in use');
+    }
+
+    throw new HttpError('Unable to create a user');
   }
 });
 

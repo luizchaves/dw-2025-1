@@ -39,6 +39,8 @@ model Ping {
   createAt DateTime @default(now())
   host     Host     @relation(fields: [hostId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   hostId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId   String
   icmps    Icmp[]
   stats    Stats?
 }
@@ -59,4 +61,12 @@ model Icmp {
   time   Float
   ping   Ping   @relation(fields: [pingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   pingId String
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+  pings    Ping[]
 }

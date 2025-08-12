@@ -87,3 +87,52 @@ GET {{server}}/api/tags/production/hosts
 
 ### Get hosts by nonexistent tag
 GET {{server}}/api/tags/nonexistent/hosts
+
+### Create a user
+# @name createUser
+POST {{server}}/api/users
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "teste@example.com",
+  "password": "minhasenha123"
+}
+
+### Create a user without name
+POST {{server}}/api/users
+Content-Type: application/json
+
+{
+  "email": "teste@example.com",
+  "password": "password123"
+}
+
+### Create a user without email
+POST {{server}}/api/users
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "password": "password123"
+}
+
+### Create a user without password
+POST {{server}}/api/users
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "teste@example.com"
+}
+
+### Create a user with duplicate email
+POST {{server}}/api/users
+Content-Type: application/json
+
+{
+  "name": "Test User 2",
+  "email": "teste@example.com",
+  "password": "outrasenha456"
+}
+

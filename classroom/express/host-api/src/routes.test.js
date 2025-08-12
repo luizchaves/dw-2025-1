@@ -213,4 +213,70 @@ describe('Moniotr App', () => {
       });
     });
   });
+
+  describe('User Endpoints', () => {
+    let createdUser;
+
+    const newUser = {
+      name: 'João Silva',
+      email: 'joao@example.com',
+      password: 'minhasenha123',
+    };
+
+    const duplicateEmailUser = {
+      name: 'Maria Oliveira',
+      email: 'joao@example.com', // Same email as newUser
+      password: 'outrasenha456',
+    };
+
+    describe('POST /api/users', () => {
+      it('should create a new user', async () => {
+        const response = await request(app).post('/api/users').send(newUser);
+
+        createdUser = response.body;
+
+        assert.strictEqual(response.statusCode, 201);
+        assert.strictEqual(response.body.name, newUser.name);
+        assert.strictEqual(response.body.email, newUser.email);
+        assert.strictEqual(response.body.password, undefined); // Password should not be returned
+      });
+
+      it('should not create a user without name', async () => {
+        const response = await request(app).post('/api/users').send({
+          email: 'test@example.com',
+          password: 'password123',
+        });
+
+        assert.strictEqual(response.statusCode, 400);
+        assert.strictEqual(response.body.message, 'Error when passing parameters');
+      });
+
+      it('should not create a user without email', async () => {
+        const response = await request(app).post('/api/users').send({
+          name: 'Test User',
+          password: 'password123',
+        });
+
+        assert.strictEqual(response.statusCode, 400);
+        assert.strictEqual(response.body.message, 'Error when passing parameters');
+      });
+
+      it('should not create a user without password', async () => {
+        const response = await request(app).post('/api/users').send({
+          name: 'Test User',
+          email: 'test@example.com',
+        });
+
+        assert.strictEqual(response.statusCode, 400);
+        assert.strictEqual(response.body.message, 'Error when passing parameters');
+      });
+
+      it('should not create a user with duplicate email', async () => {
+        const response = await request(app).post('/api/users').send(duplicateEmailUser);
+
+        assert.strictEqual(response.statusCode, 400);
+        assert.strictEqual(response.body.message, 'Email already in use');
+      });
+    });
+  });
 });

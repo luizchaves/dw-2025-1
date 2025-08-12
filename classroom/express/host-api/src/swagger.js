@@ -151,6 +151,51 @@ const options = {
             }
           }
         },
+        User: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              format: 'uuid',
+              description: 'ID único do usuário (gerado automaticamente)',
+              example: '789e1234-e89b-12d3-a456-426614174003'
+            },
+            name: {
+              type: 'string',
+              description: 'Nome completo do usuário',
+              example: 'João Silva'
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              description: 'Email do usuário',
+              example: 'joao@example.com'
+            }
+          },
+          description: 'Dados do usuário (senha não é retornada por segurança)'
+        },
+        UserInput: {
+          type: 'object',
+          required: ['name', 'email', 'password'],
+          properties: {
+            name: {
+              type: 'string',
+              description: 'Nome completo do usuário',
+              example: 'João Silva'
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              description: 'Email do usuário (deve ser único)',
+              example: 'joao@example.com'
+            },
+            password: {
+              type: 'string',
+              description: 'Senha do usuário (será criptografada)',
+              example: 'minhasenhasegura123'
+            }
+          }
+        },
         Error: {
           type: 'object',
           properties: {

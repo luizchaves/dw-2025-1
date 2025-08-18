@@ -31,7 +31,10 @@ async function create({ id, name, address, tags }) {
     },
   });
 
-  return createdHost;
+  return {
+    ...createdHost,
+    tags: createdHost.tags.map(t => t.tag.name)
+  };
 }
 
 async function read(where = {}) {
@@ -64,11 +67,14 @@ async function read(where = {}) {
     },
   });
 
-  if (hosts.length === 1 && where) {
-    return hosts[0];
+  const hostsMapped = hosts.map(h => ({
+    ...h,
+    tags: h.tags.map(t => t.tag.name)
+  }));
+  if (hostsMapped.length === 1 && where) {
+    return hostsMapped[0];
   }
-
-  return hosts;
+  return hostsMapped;
 }
 
 async function readById(id) {
@@ -85,7 +91,11 @@ async function readById(id) {
     },
   });
 
-  return host;
+  if (!host) return null;
+  return {
+    ...host,
+    tags: host.tags.map(t => t.tag.name)
+  };
 }
 
 async function update({ id, name, address, tags }) {
@@ -122,7 +132,10 @@ async function update({ id, name, address, tags }) {
     },
   });
 
-  return updatedHost;
+  return {
+    ...updatedHost,
+    tags: updatedHost.tags.map(t => t.tag.name)
+  };
 }
 
 async function remove(id) {

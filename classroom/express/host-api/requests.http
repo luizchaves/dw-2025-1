@@ -1,5 +1,6 @@
 @server=http://localhost:3000
 @createdHostId = {{createHost.response.body.$.id}}
+@token = {{signin.response.body.$.token}}
 
 ### Create a host
 # @name createHost
@@ -95,8 +96,8 @@ Content-Type: application/json
 
 {
   "name": "Test User",
-  "email": "teste@example.com",
-  "password": "minhasenha123"
+  "email": "test@example.com",
+  "password": "password123"
 }
 
 ### Create a user without name
@@ -104,7 +105,7 @@ POST {{server}}/api/users
 Content-Type: application/json
 
 {
-  "email": "teste@example.com",
+  "email": "test@example.com",
   "password": "password123"
 }
 
@@ -123,7 +124,7 @@ Content-Type: application/json
 
 {
   "name": "Test User",
-  "email": "teste@example.com"
+  "email": "test@example.com"
 }
 
 ### Create a user with duplicate email
@@ -132,7 +133,29 @@ Content-Type: application/json
 
 {
   "name": "Test User 2",
-  "email": "teste@example.com",
+  "email": "test@example.com",
   "password": "outrasenha456"
 }
 
+### Signin
+# @name signin
+POST {{server}}/api/signin
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Read current user
+GET {{server}}/api/users/me
+Authorization: bearer {{token}}
+
+### Signin 401
+POST {{server}}/api/signin
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "321"
+}

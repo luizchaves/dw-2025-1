@@ -20,6 +20,14 @@ const options = {
       }
     ],
     components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          description: 'Informe o token JWT no formato: Bearer <token>'
+        }
+      },
       schemas: {
         Host: {
           type: 'object',
@@ -44,9 +52,11 @@ const options = {
             tags: {
               type: 'array',
               items: {
-                $ref: '#/components/schemas/Tag'
+                type: 'string',
+                example: 'DNS'
               },
-              description: 'Tags associadas ao host'
+              description: 'Nomes das tags associadas ao host',
+              example: ['DNS', 'Google']
             },
             createdAt: {
               type: 'string',
@@ -163,13 +173,13 @@ const options = {
             name: {
               type: 'string',
               description: 'Nome completo do usuário',
-              example: 'João Silva'
+              example: 'Test user'
             },
             email: {
               type: 'string',
               format: 'email',
               description: 'Email do usuário',
-              example: 'joao@example.com'
+              example: 'test@email.com'
             }
           },
           description: 'Dados do usuário (senha não é retornada por segurança)'
@@ -181,18 +191,18 @@ const options = {
             name: {
               type: 'string',
               description: 'Nome completo do usuário',
-              example: 'João Silva'
+              example: 'Test User'
             },
             email: {
               type: 'string',
               format: 'email',
               description: 'Email do usuário (deve ser único)',
-              example: 'joao@example.com'
+              example: 'test@email.com'
             },
             password: {
               type: 'string',
               description: 'Senha do usuário (será criptografada)',
-              example: 'minhasenhasegura123'
+              example: 'password123'
             }
           }
         },
@@ -205,6 +215,20 @@ const options = {
               example: 'Error when passing parameters'
             }
           }
+        },
+        Error401: {
+          type: 'object',
+          properties: {
+            auth: {
+              type: 'boolean',
+              example: false
+            },
+            message: {
+              type: 'string',
+              example: 'Token invalid.'
+            }
+          },
+          description: 'Erro de autenticação: token ausente ou inválido.'
         }
       }
     }

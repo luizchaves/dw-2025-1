@@ -1,9 +1,19 @@
 import express from 'express';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import Host from './models/Hosts.js';
 import Ping from './models/Pings.js';
 import Tag from './models/Tags.js';
 import User from './models/Users.js';
 import { ping } from './lib/ping.js';
+import { isAuthenticated } from './middleware/auth.js';
+
+class HttpError extends Error {
+  constructor(message, code = 400) {
+    super(message);
+    this.code = code;
+  }
+}
 
 /**
  * @swagger
@@ -17,14 +27,6 @@ import { ping } from './lib/ping.js';
  *   - name: Users
  *     description: API para gerenciamento de usuários
  */
-
-class HttpError extends Error {
-  constructor(message, code = 400) {
-    super(message);
-    this.code = code;
-  }
-}
-
 const router = express.Router();
 
 /**
@@ -39,6 +41,8 @@ const router = express.Router();
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/HostInput'
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Host criado com sucesso
@@ -52,8 +56,14 @@ const router = express.Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  */
-router.post('/hosts', async (req, res) => {
+router.post('/hosts', isAuthenticated, async (req, res) => {
   const { name, address, tags } = req.body;
 
   if (!name || !address) {
@@ -86,6 +96,8 @@ router.post('/hosts', async (req, res) => {
  *         schema:
  *           type: string
  *         description: Filtrar hosts por endereço
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de hosts
@@ -95,8 +107,14 @@ router.post('/hosts', async (req, res) => {
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Host'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  */
-router.get('/hosts', async (req, res) => {
+router.get('/hosts', isAuthenticated, async (req, res) => {
   const { name } = req.query;
 
   try {
@@ -128,6 +146,8 @@ router.get('/hosts', async (req, res) => {
  *           type: string
  *           format: uuid
  *         description: ID único do host
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Host encontrado
@@ -141,8 +161,14 @@ router.get('/hosts', async (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  */
-router.get('/hosts/:id', async (req, res) => {
+router.get('/hosts/:id', isAuthenticated, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -178,6 +204,8 @@ router.get('/hosts/:id', async (req, res) => {
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/HostInput'
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Host atualizado com sucesso
@@ -191,8 +219,14 @@ router.get('/hosts/:id', async (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  */
-router.put('/hosts/:id', async (req, res) => {
+router.put('/hosts/:id', isAuthenticated, async (req, res) => {
   const { name, address, tags } = req.body;
 
   const id = req.params.id;
@@ -224,6 +258,8 @@ router.put('/hosts/:id', async (req, res) => {
  *           type: string
  *           format: uuid
  *         description: ID único do host
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       204:
  *         description: Host deletado com sucesso
@@ -233,8 +269,14 @@ router.put('/hosts/:id', async (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  */
-router.delete('/hosts/:id', async (req, res) => {
+router.delete('/hosts/:id', isAuthenticated, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -269,6 +311,8 @@ router.delete('/hosts/:id', async (req, res) => {
  *           maximum: 100
  *         description: Número de pings a executar
  *         example: 4
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Ping executado com sucesso
@@ -282,8 +326,14 @@ router.delete('/hosts/:id', async (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  */
-router.post('/hosts/:hostId/pings/:count', async (req, res) => {
+router.post('/hosts/:hostId/pings/:count', isAuthenticated, async (req, res) => {
   const { hostId, count } = req.params;
 
   try {
@@ -313,6 +363,8 @@ router.post('/hosts/:hostId/pings/:count', async (req, res) => {
  *           type: string
  *           format: uuid
  *         description: ID único do host
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de pings do host
@@ -328,8 +380,14 @@ router.post('/hosts/:hostId/pings/:count', async (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  */
-router.get('/hosts/:hostId/pings', async (req, res) => {
+router.get('/hosts/:hostId/pings', isAuthenticated, async (req, res) => {
   const { hostId: id } = req.params;
 
   try {
@@ -347,6 +405,8 @@ router.get('/hosts/:hostId/pings', async (req, res) => {
  *   get:
  *     summary: Listar todas as tags disponíveis
  *     tags: [Tags]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de tags
@@ -362,8 +422,14 @@ router.get('/hosts/:hostId/pings', async (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  */
-router.get('/tags', async (req, res) => {
+router.get('/tags', isAuthenticated, async (req, res) => {
   try {
     const tags = await Tag.read();
 
@@ -387,6 +453,8 @@ router.get('/tags', async (req, res) => {
  *           type: string
  *         description: Nome da tag para filtrar hosts
  *         example: "production"
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de hosts com a tag especificada
@@ -402,8 +470,14 @@ router.get('/tags', async (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  */
-router.get('/tags/:tag/hosts', async (req, res) => {
+router.get('/tags/:tag/hosts', isAuthenticated, async (req, res) => {
   const { tag } = req.params;
 
   try {
@@ -421,6 +495,8 @@ router.get('/tags/:tag/hosts', async (req, res) => {
  *   get:
  *     summary: Listar todos os pings de todos os hosts
  *     tags: [Pings]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista completa de pings
@@ -436,8 +512,14 @@ router.get('/tags/:tag/hosts', async (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
  */
-router.get('/pings', async (req, res) => {
+router.get('/pings', isAuthenticated, async (req, res) => {
   try {
     const pings = await Ping.read();
 
@@ -459,6 +541,8 @@ router.get('/pings', async (req, res) => {
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/UserInput'
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Usuário criado com sucesso
@@ -495,6 +579,120 @@ router.post('/users', async (req, res) => {
     }
 
     throw new HttpError('Unable to create a user');
+  }
+});
+
+/**
+ * @swagger
+ * /users/me:
+ *   get:
+ *     summary: Retorna os dados do usuário autenticado
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dados do usuário autenticado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Usuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Não autorizado - token ausente ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error401'
+ */
+router.get('/users/me', isAuthenticated, async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const user = await User.readById(userId);
+
+    delete user.password;
+
+    return res.json(user);
+  } catch (error) {
+    throw new HTTPError('Unable to find user', 400);
+  }
+});
+
+/**
+ * @swagger
+ * /users/signin:
+ *   post:
+ *     summary: Autentica um usuário e retorna um token JWT
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: test@email.com
+ *               password:
+ *                 type: string
+ *                 example: password123
+ *     responses:
+ *       200:
+ *         description: Autenticação bem-sucedida, retorna o token JWT
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 auth:
+ *                   type: boolean
+ *                   example: true
+ *                 token:
+ *                   type: string
+ *                   description: Token JWT
+ *       401:
+ *         description: Usuário não encontrado ou senha incorreta
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: User not found
+ */
+router.post('/users/signin', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const { id: userId, password: hash } = await User.read({ email });
+
+    const match = await bcrypt.compare(password, hash);
+
+    if (match) {
+      const token = jwt.sign(
+        { userId },
+        process.env.JWT_SECRET,
+        { expiresIn: 3600 } // 1h
+      );
+
+      return res.json({ auth: true, token });
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    res.status(401).json({ error: 'User not found' });
   }
 });
 

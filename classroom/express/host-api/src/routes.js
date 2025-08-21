@@ -339,9 +339,11 @@ router.post('/hosts/:hostId/pings/:count', isAuthenticated, async (req, res) => 
   try {
     const host = await Host.readById(hostId);
 
+    const userId = req.userId;
+
     const pingResult = await ping(host.address, count);
 
-    const createdPing = await Ping.create({ ...pingResult, host });
+    const createdPing = await Ping.create({ ...pingResult, host, userId });
 
     return res.json(createdPing);
   } catch (error) {

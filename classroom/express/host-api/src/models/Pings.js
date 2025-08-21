@@ -1,7 +1,7 @@
 import prisma from '../database/database.js';
 
-async function create({ icmps, stats, host }) {
-  if (!icmps || !stats || !host) {
+async function create({ icmps, stats, host, userId }) {
+  if (!icmps || !stats || !host || !userId) {
     throw new Error('Error when passing parameters');
   }
 
@@ -16,6 +16,11 @@ async function create({ icmps, stats, host }) {
       host: {
         connect: {
           id: host.id,
+        },
+      },
+      user: {
+        connect: {
+          id: userId,
         },
       },
     },

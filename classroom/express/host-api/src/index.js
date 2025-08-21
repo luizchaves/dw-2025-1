@@ -16,6 +16,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use('/api', router);
 
+app.get('/', (req, res) => {
+  res.redirect('/signin.html');
+});
+
 app.listen(3000, () => console.log('Server is running'));
 
 export default app;

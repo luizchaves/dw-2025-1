@@ -56,7 +56,11 @@ export function create(host) {
 
     const pings = await Storage.create(`hosts/${host.id}/pings/3`);
 
-    const times = pings.icmps.map((icmp) => icmp.time);
+    let times = [];
+
+    if (!pings.message) {
+      times = pings.icmps.map((icmp) => icmp.time);
+    }
 
     LineChart.update(times);
 
